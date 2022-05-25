@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Student.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">demo1</a> &gt; <a href="index.source.html" class="el_package">com.example.demo1.core.db.model</a> &gt; <span class="el_source">Student.java</span></div><h1>Student.java</h1><pre class="source lang-java linenums">package com.example.demo1.core.db.model;
+
+import lombok.Data;
+
+<span class="nc bnc" id="L5" title="All 22 branches missed.">@Data</span>
+public class Student extends Member {
+
+<span class="nc" id="L8">    private String admissionYearMonth;</span>
+<span class="nc" id="L9">    private String classes;</span>
+
+    public Student(String id, String name, String gender, String role, String admissionYearMonth, String classes) {
+<span class="fc" id="L12">        super(id, name, gender, role);</span>
+<span class="fc" id="L13">        this.admissionYearMonth = admissionYearMonth;</span>
+<span class="fc" id="L14">        this.classes = classes;</span>
+<span class="fc" id="L15">    }</span>
+
+    @Override
+    public String toString() {
+<span class="fc" id="L19">        return &quot;Member{&quot; +</span>
+<span class="fc" id="L20">                &quot;id='&quot; + super.getId() + '\'' +</span>
+<span class="fc" id="L21">                &quot;, name='&quot; + super.getName() + '\'' +</span>
+<span class="fc" id="L22">                &quot;, gender='&quot; + super.getGender() + '\'' +</span>
+<span class="fc" id="L23">                &quot;, role='&quot; + super.getRole() + '\'' +</span>
+                &quot;, admissionYearMonth='&quot; + this.admissionYearMonth + '\'' +
+                &quot;, classes='&quot; + this.classes + '\'' +
+                '}' + &quot;\n&quot;;
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

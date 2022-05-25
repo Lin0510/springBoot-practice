@@ -1,0 +1,29 @@
+
+^
+java:S1128"ARemove this unused import 'org.springframework.util.ObjectUtils'.(ÜêÅ™8Ä±İğ/
+^
+java:S1192+"HDefine a constant instead of duplicating this literal "teacher" 3 times.(“Ë‡Ÿ
+q
+java:S1488/"\Immediately return this expression instead of assigning it to the temporary variable "data".(ç÷g
+q
+java:S14886"\Immediately return this expression instead of assigning it to the temporary variable "data".(¯ıæ
+{
+java:S1488$"`Immediately return this expression instead of assigning it to the temporary variable "dataList".( œı¿ûÿÿÿÿ
+z
+java:S1488Q"_Immediately return this expression instead of assigning it to the temporary variable "teacher".(ğÃê”şÿÿÿÿ
+{
+java:S1488H"`Immediately return this expression instead of assigning it to the temporary variable "dataList".( œı¿ûÿÿÿÿ
+z
+java:S1488k"_Immediately return this expression instead of assigning it to the temporary variable "student".(Á´ÿ‚úÿÿÿÿ
+{
+java:S1488b"`Immediately return this expression instead of assigning it to the temporary variable "dataList".( œı¿ûÿÿÿÿ
+{
+java:S1488„"_Immediately return this expression instead of assigning it to the temporary variable "teacher".(ğÃê”şÿÿÿÿ
+r
+java:S1488"\Immediately return this expression instead of assigning it to the temporary variable "data".(¯ıæ
+w
+java:S1488â"`Immediately return this expression instead of assigning it to the temporary variable "dataList".(Ü¿¦‹
+w
+java:S1488é"`Immediately return this expression instead of assigning it to the temporary variable "dataList".(ÁïçË
+|
+java:S1488ğ"`Immediately return this expression instead of assigning it to the temporary variable "dataList".(Ø¬Ú÷şÿÿÿÿ

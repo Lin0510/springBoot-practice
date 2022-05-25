@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MemberService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">demo1</a> &gt; <a href="index.source.html" class="el_package">com.example.demo1.core.service.impl</a> &gt; <span class="el_source">MemberService.java</span></div><h1>MemberService.java</h1><pre class="source lang-java linenums">package com.example.demo1.core.service.impl;
+
+import com.example.demo1.core.db.dao.IMemberDao;
+import com.example.demo1.core.db.model.Member;
+import com.example.demo1.core.db.model.Student;
+import com.example.demo1.core.db.model.Teacher;
+import com.example.demo1.core.db.repository.MemberRepository;
+import com.example.demo1.web.handler.MyException;
+import com.example.demo1.core.service.IMemberService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+@Service
+<span class="fc" id="L19">public class MemberService implements IMemberService {</span>
+
+    @Autowired
+    private MemberRepository memberRepository;
+
+    @Autowired
+    private IMemberDao memberDao;
+
+    // 取得所有成員資料(教師、學生)
+    @Override
+    public List&lt;Member&gt; getAllMember() {
+<span class="fc" id="L30">        List&lt;Member&gt; memberList = memberRepository.findAll();</span>
+
+<span class="pc bpc" id="L32" title="1 of 2 branches missed.">        if (memberList.isEmpty()) { throw new MyException(&quot;無成員資料&quot;); }</span>
+
+<span class="fc" id="L34">        List&lt;Member&gt; dataList = memberList.stream()</span>
+<span class="fc" id="L35">                .map(result -&gt; {</span>
+<span class="fc" id="L36">                    String id = result.getId();</span>
+<span class="fc" id="L37">                    String name = result.getName();</span>
+<span class="fc" id="L38">                    String gender = result.getGender();</span>
+<span class="fc" id="L39">                    String role = result.getRole();</span>
+
+<span class="fc bfc" id="L41" title="All 2 branches covered.">                    if (result.getRole().equals(&quot;teacher&quot;)) {</span>
+<span class="fc" id="L42">                        String subject = result.getSubject();</span>
+<span class="fc" id="L43">                        String jobTitle = result.getJobTitle();</span>
+
+<span class="fc" id="L45">                        Teacher data = new Teacher(id, name, gender, role, subject, jobTitle);</span>
+
+<span class="fc" id="L47">                        return data;</span>
+<span class="pc bpc" id="L48" title="1 of 2 branches missed.">                    } else if (result.getRole().equals(&quot;student&quot;)) {</span>
+<span class="fc" id="L49">                        String admissionYearMonth = result.getAdmissionYearMonth();</span>
+<span class="fc" id="L50">                        String classes = result.getClasses();</span>
+
+<span class="fc" id="L52">                        Student data = new Student(id, name, gender, role, admissionYearMonth, classes);</span>
+
+<span class="fc" id="L54">                        return data;</span>
+                    } else {
+<span class="nc" id="L56">                        throw new MyException(&quot;找不到成員資料&quot;);</span>
+                    }
+<span class="fc" id="L58">                }).collect(Collectors.toList());</span>
+
+<span class="fc" id="L60">        return dataList;</span>
+    }
+
+
+    // 取得所有教師資料
+    @Override
+    public List&lt;Member&gt; getAllTeacher() {
+<span class="fc" id="L67">        List&lt;Member&gt; memberList = memberRepository.findByRoleLike(&quot;teacher&quot;);</span>
+
+<span class="pc bpc" id="L69" title="1 of 2 branches missed.">        if (memberList.isEmpty()) {</span>
+<span class="nc" id="L70">            throw new MyException(&quot;沒有成員資料&quot;);</span>
+        } else {
+<span class="fc" id="L72">            List&lt;Member&gt; dataList = memberList.stream()</span>
+<span class="fc" id="L73">                    .map(result -&gt; {</span>
+<span class="fc" id="L74">                        String id = result.getId();</span>
+<span class="fc" id="L75">                        String name = result.getName();</span>
+<span class="fc" id="L76">                        String gender = result.getGender();</span>
+<span class="fc" id="L77">                        String role = result.getRole();</span>
+<span class="fc" id="L78">                        String subject = result.getSubject();</span>
+<span class="fc" id="L79">                        String jobTitle = result.getJobTitle();</span>
+
+<span class="fc" id="L81">                        Teacher teacher = new Teacher(id, name, gender, role, subject, jobTitle);</span>
+
+<span class="fc" id="L83">                        return teacher;</span>
+<span class="fc" id="L84">                    }).collect(Collectors.toList());</span>
+
+<span class="fc" id="L86">            return dataList;</span>
+        }
+    }
+
+    // 取得所有學生資料
+    @Override
+    public List&lt;Member&gt; getAllStudent() {
+<span class="fc" id="L93">        List&lt;Member&gt; memberList = memberRepository.findByRoleLike(&quot;student&quot;);</span>
+
+<span class="pc bpc" id="L95" title="1 of 2 branches missed.">        if (memberList.isEmpty()) {</span>
+<span class="nc" id="L96">            throw new MyException(&quot;找不到成員資料&quot;);</span>
+        } else {
+<span class="fc" id="L98">            List&lt;Member&gt; dataList = memberList.stream()</span>
+<span class="fc" id="L99">                    .map(result -&gt; {</span>
+<span class="fc" id="L100">                        String id = result.getId();</span>
+<span class="fc" id="L101">                        String name = result.getName();</span>
+<span class="fc" id="L102">                        String gender = result.getGender();</span>
+<span class="fc" id="L103">                        String role = result.getRole();</span>
+<span class="fc" id="L104">                        String admissionYearMonth = result.getAdmissionYearMonth();</span>
+<span class="fc" id="L105">                        String classes = result.getClasses();</span>
+
+<span class="fc" id="L107">                        Student student = new Student(id, name, gender, role, admissionYearMonth, classes);</span>
+
+<span class="fc" id="L109">                        return student;</span>
+<span class="fc" id="L110">                    }).collect(Collectors.toList());</span>
+
+<span class="fc" id="L112">            return dataList;</span>
+        }
+    }
+
+    // 根據輸入的ID取得教師資料
+    @Override
+    public Member getTeacher(String teacherId) {
+<span class="fc" id="L119">        Optional&lt;Member&gt; resultOption = memberRepository.findById(teacherId);</span>
+
+<span class="pc bpc" id="L121" title="1 of 2 branches missed.">        if (resultOption.isPresent()) {</span>
+<span class="fc" id="L122">            Member member = resultOption.get();</span>
+
+<span class="pc bpc" id="L124" title="1 of 2 branches missed.">            if (member.getRole().equals(&quot;teacher&quot;)) {</span>
+<span class="fc" id="L125">                String id = member.getId();</span>
+<span class="fc" id="L126">                String name = member.getName();</span>
+<span class="fc" id="L127">                String gender = member.getGender();</span>
+<span class="fc" id="L128">                String role = member.getRole();</span>
+<span class="fc" id="L129">                String subject = member.getSubject();</span>
+<span class="fc" id="L130">                String jobTitle = member.getJobTitle();</span>
+
+<span class="fc" id="L132">                Teacher teacher = new Teacher(id, name, gender, role, subject, jobTitle);</span>
+
+<span class="fc" id="L134">                return teacher;</span>
+            }
+<span class="nc" id="L136">            throw new MyException(&quot;查無此位老師&quot;);</span>
+        }
+<span class="nc" id="L138">        throw new MyException(&quot;查無此位老師&quot;);</span>
+    }
+
+    // 根據輸入的ID取得學生資料
+    @Override
+    public Member getStudent(String studentId) {
+<span class="fc" id="L144">        Optional&lt;Member&gt; resultOption = memberRepository.findById(studentId);</span>
+
+<span class="pc bpc" id="L146" title="1 of 2 branches missed.">        if (resultOption.isPresent()) {</span>
+<span class="fc" id="L147">            Member member = resultOption.get();</span>
+
+<span class="pc bpc" id="L149" title="1 of 2 branches missed.">            if (member.getRole().equals(&quot;student&quot;)) {</span>
+<span class="fc" id="L150">                String id = member.getId();</span>
+<span class="fc" id="L151">                String name = member.getName();</span>
+<span class="fc" id="L152">                String gender = member.getGender();</span>
+<span class="fc" id="L153">                String role = member.getRole();</span>
+<span class="fc" id="L154">                String admissionYearMonth = member.getAdmissionYearMonth();</span>
+<span class="fc" id="L155">                String classes = member.getClasses();</span>
+
+<span class="fc" id="L157">                Student data = new Student(id, name, gender, role, admissionYearMonth, classes);</span>
+
+<span class="fc" id="L159">                return data;</span>
+            }
+<span class="nc" id="L161">            throw new MyException(&quot;查無此位學生&quot;);</span>
+        }
+<span class="nc" id="L163">        throw new MyException(&quot;查無此位學生&quot;);</span>
+    }
+
+    // 儲存成員資料
+    @Override
+    public boolean save(Member member) {
+<span class="pc bpc" id="L169" title="1 of 2 branches missed.">        if (ObjectUtils.isEmpty(member)) {</span>
+<span class="nc" id="L170">            return false;</span>
+        }
+<span class="fc" id="L172">        memberRepository.save(member);</span>
+<span class="fc" id="L173">        return true;</span>
+    }
+
+    // 根據輸入的ID刪除資料
+    @Override
+    public boolean delete(String id) {
+<span class="fc" id="L179">        memberRepository.deleteById(id);</span>
+<span class="fc" id="L180">        return true;</span>
+    }
+
+    // 根據輸入的ID更新成員資料(可只更新一個或多個欄位)
+    @Override
+    public void update(String id, Member member) {
+<span class="nc" id="L186">        Optional&lt;Member&gt; resultOption = memberRepository.findById(id);</span>
+
+<span class="nc bnc" id="L188" title="All 2 branches missed.">        if (resultOption.isPresent()) {</span>
+<span class="nc" id="L189">            Member data = resultOption.get();</span>
+
+<span class="nc bnc" id="L191" title="All 2 branches missed.">            String name = member.getName() == null ? data.getName() : member.getName();</span>
+<span class="nc bnc" id="L192" title="All 2 branches missed.">            String gender = member.getGender() == null ? data.getGender() : member.getGender();</span>
+<span class="nc bnc" id="L193" title="All 2 branches missed.">            String role = member.getRole() == null ? data.getRole() : member.getRole();</span>
+<span class="nc bnc" id="L194" title="All 2 branches missed.">            String subject = member.getSubject() == null ? data.getSubject() : member.getSubject();</span>
+<span class="nc bnc" id="L195" title="All 2 branches missed.">            String jobTitle = member.getJobTitle() == null ? data.getJobTitle() : member.getJobTitle();</span>
+<span class="nc bnc" id="L196" title="All 2 branches missed.">            String admissionYearMonth = member.getAdmissionYearMonth() == null ? data.getAdmissionYearMonth() : member.getAdmissionYearMonth();</span>
+<span class="nc bnc" id="L197" title="All 2 branches missed.">            String classes = member.getClasses() == null ? data.getClasses() : member.getClasses();</span>
+
+<span class="nc" id="L199">            Member result = new Member(id, name, gender, role, subject, jobTitle, admissionYearMonth, classes);</span>
+<span class="nc" id="L200">            memberRepository.save(result);</span>
+        }
+
+<span class="nc" id="L203">        memberRepository.save(member);</span>
+<span class="nc" id="L204">    }</span>
+
+    // ------------------------------------------------------------------------------------------------------
+    // JPA Criteria Queries
+
+    //取得所有成員資料
+    @Override
+    public List&lt;Member&gt; getAllMemberByCriteria() {
+<span class="fc" id="L212">        List&lt;Member&gt; dataList = memberDao.getAllMember();</span>
+<span class="fc" id="L213">        return dataList;</span>
+    }
+
+    // 取得所有教師資料
+    @Override
+    public List&lt;Member&gt; getAllTeacherByCriteria() {
+<span class="fc" id="L219">        List&lt;Member&gt; dataList = memberDao.getAllTeacher();</span>
+<span class="fc" id="L220">        return dataList;</span>
+    }
+
+    // 取得所有學生資料
+    @Override
+    public List&lt;Member&gt; getAllStudentByCriteria() {
+<span class="fc" id="L226">        List&lt;Member&gt; dataList = memberDao.getAllStudent();</span>
+<span class="fc" id="L227">        return dataList;</span>
+    }
+
+    @Override
+    // 根據輸入的name取得成員資料
+    public List&lt;Member&gt; findByNameByCriteria(String name) {
+<span class="fc" id="L233">        List&lt;Member&gt; dataList = memberDao.findByName(name);</span>
+
+<span class="pc bpc" id="L235" title="1 of 2 branches missed.">        if (dataList.isEmpty()) {</span>
+<span class="nc" id="L236">            throw new MyException(&quot;查無此名字成員&quot;);</span>
+        } else {
+<span class="fc" id="L238">            return dataList;</span>
+        }
+    }
+
+    // 查詢name含有輸入字串的所有成員
+    @Override
+    public List&lt;Member&gt; findByNameContainsStrByCriteria(String str) {
+<span class="fc" id="L245">        List&lt;Member&gt; dataList = memberDao.findByNameContainsStr(str);</span>
+
+<span class="pc bpc" id="L247" title="1 of 2 branches missed.">        if (str.equals(&quot;&quot;)) {</span>
+<span class="nc" id="L248">            throw new MyException(&quot;請輸入查詢字段&quot;);</span>
+        } else {
+<span class="pc bpc" id="L250" title="1 of 2 branches missed.">            if (dataList.isEmpty()) {</span>
+<span class="nc" id="L251">                throw new MyException(&quot;查無名字含有此字段成員&quot;);</span>
+            } else {
+<span class="fc" id="L253">                return dataList;</span>
+            }
+        }
+    }
+
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

@@ -1,0 +1,11 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+demo1,com.example.demo1.web.controller,MemberController,82,3,0,0,26,1,13,1,13,1
+demo1,com.example.demo1.core.db.dao.impl,MemberDaoImpl,0,166,0,0,0,36,0,6,0,6
+demo1,com.example.demo1.core.db.model,Student,106,27,22,0,3,9,18,2,7,2
+demo1,com.example.demo1.core.db.model,Member,310,87,70,0,1,27,46,12,11,12
+demo1,com.example.demo1.core.db.model,Teacher,106,27,22,0,3,9,18,2,7,2
+demo1,com.example.demo1.core.service.impl,MemberService,155,326,28,14,25,91,21,17,1,16
+demo1,com.example.demo1,ServletInitializer,12,0,0,0,2,0,2,0,2,0
+demo1,com.example.demo1,Demo1Application,5,3,0,0,2,1,1,1,1,1
+demo1,com.example.demo1.web.handler,ExceptionController,13,3,0,0,3,1,2,1,2,1
+demo1,com.example.demo1.web.handler,MyException,13,0,0,0,6,0,3,0,3,0

@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MemberDaoImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">demo1</a> &gt; <a href="index.source.html" class="el_package">com.example.demo1.core.db.dao.impl</a> &gt; <span class="el_source">MemberDaoImpl.java</span></div><h1>MemberDaoImpl.java</h1><pre class="source lang-java linenums">package com.example.demo1.core.db.dao.impl;
+
+import com.example.demo1.core.db.dao.IMemberDao;
+import com.example.demo1.core.db.model.Member;
+import org.springframework.stereotype.Repository;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.*;
+import java.util.List;
+
+@Repository
+<span class="fc" id="L14">public class MemberDaoImpl implements IMemberDao {</span>
+
+    // 管理entity生命週期及對持久層進行CRUD操作。
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    // 取得所有成員資料(教師、學生)
+    public List&lt;Member&gt; getAllMember() {
+<span class="fc" id="L22">        CriteriaBuilder cb = entityManager.getCriteriaBuilder();</span>
+<span class="fc" id="L23">        CriteriaQuery cq = cb.createQuery(Member.class);</span>
+<span class="fc" id="L24">        Root&lt;Member&gt; root = cq.from(Member.class);</span>
+<span class="fc" id="L25">        cq.select(root);</span>
+
+<span class="fc" id="L27">        TypedQuery&lt;Member&gt; typedQuery = entityManager.createQuery(cq);</span>
+<span class="fc" id="L28">        List&lt;Member&gt; dataList = typedQuery.getResultList();</span>
+
+<span class="fc" id="L30">        return dataList;</span>
+    }
+
+    // 取得所有學生資料
+    public List&lt;Member&gt; getAllTeacher() {
+<span class="fc" id="L35">        CriteriaBuilder cb = entityManager.getCriteriaBuilder();</span>
+<span class="fc" id="L36">        CriteriaQuery cq = cb.createQuery(Member.class);</span>
+<span class="fc" id="L37">        Root&lt;Member&gt; root = cq.from(Member.class);</span>
+
+<span class="fc" id="L39">        cq.select(root).where((root.get(&quot;role&quot;)).in(&quot;teacher&quot;));</span>
+
+<span class="fc" id="L41">        TypedQuery&lt;Member&gt; typedQuery = entityManager.createQuery(cq);</span>
+<span class="fc" id="L42">        List&lt;Member&gt; dataList = typedQuery.getResultList();</span>
+
+<span class="fc" id="L44">        return dataList;</span>
+    }
+
+    // 取得所有教師資料
+    public List&lt;Member&gt; getAllStudent() {
+<span class="fc" id="L49">        CriteriaBuilder cb = entityManager.getCriteriaBuilder();</span>
+<span class="fc" id="L50">        CriteriaQuery cq = cb.createQuery(Member.class);</span>
+<span class="fc" id="L51">        Root&lt;Member&gt; root = cq.from(Member.class);</span>
+
+<span class="fc" id="L53">        cq.select(root).where(cb.like(root.get(&quot;role&quot;), &quot;student&quot;));</span>
+
+<span class="fc" id="L55">        TypedQuery&lt;Member&gt; typedQuery = entityManager.createQuery(cq);</span>
+<span class="fc" id="L56">        List&lt;Member&gt; dataList = typedQuery.getResultList();</span>
+
+<span class="fc" id="L58">        return dataList;</span>
+    }
+
+    // 根據輸入的name取得成員資料
+    public List&lt;Member&gt; findByName(String name) {
+<span class="fc" id="L63">        CriteriaBuilder cb = entityManager.getCriteriaBuilder();</span>
+<span class="fc" id="L64">        CriteriaQuery&lt;Member&gt; cq = cb.createQuery(Member.class);</span>
+<span class="fc" id="L65">        Root&lt;Member&gt; root = cq.from(Member.class);</span>
+
+<span class="fc" id="L67">        cq.select(root).where(cb.like(root.get(&quot;name&quot;), name));</span>
+
+<span class="fc" id="L69">        TypedQuery&lt;Member&gt; typedQuery = entityManager.createQuery(cq);</span>
+<span class="fc" id="L70">        List&lt;Member&gt; dataList = typedQuery.getResultList();</span>
+
+<span class="fc" id="L72">        return dataList;</span>
+    }
+
+    // 查詢name含有輸入字串的所有成員
+    public List&lt;Member&gt; findByNameContainsStr(String str) {
+<span class="fc" id="L77">        CriteriaBuilder cb = entityManager.getCriteriaBuilder();</span>
+<span class="fc" id="L78">        CriteriaQuery cq = cb.createQuery(Member.class);</span>
+<span class="fc" id="L79">        Root&lt;Member&gt; root = cq.from(Member.class);</span>
+
+<span class="fc" id="L81">        cq.select(root).where(cb.like(root.get(&quot;name&quot;), &quot;%&quot;+str+&quot;%&quot;));</span>
+
+<span class="fc" id="L83">        TypedQuery&lt;Member&gt; typedQuery = entityManager.createQuery(cq);</span>
+<span class="fc" id="L84">        List&lt;Member&gt; dataList = typedQuery.getResultList();</span>
+
+<span class="fc" id="L86">        return dataList;</span>
+    }
+
+//    public void example() {
+//        // CriteriaBuilder:建構各種查詢條件如:大於、小於、等於、不等於、like、運算邏輯and、or、排序asc、desc等
+//        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+//
+//        // CriteriaQuery:組成頂層的查詢語句如select、from、where、order by、group by、having、distinct
+//        // select member
+//        CriteriaQuery&lt;Member&gt; cq = cb.createQuery(Member.class);
+//
+//        // Root:獲取entity的條件欄位
+//        // from member
+//        Root&lt;Member&gt; root = cq.from(Member.class);
+//        // 1.get items having a price of more than 1000:
+//        // cr.select(root).where(cb.gt(root.get(&quot;itemPrice&quot;), 1000));
+//
+//        // 2. getting items having itemPrice less than 1000:
+//        // cr.select(root).where(cb.lt(root.get(&quot;itemPrice&quot;), 1000));
+//
+//        // 3.Items having name contain a:
+//        cq.select(root).where(cb.like(root.get(&quot;name&quot;), &quot;%%&quot;));
+//        // 4.Records having itemPrice between 100 and 200:
+//        // cr.select(root).where(cb.between(root.get(&quot;itemPrice&quot;), 100, 200));
+//
+//        // 5.Items having itemName in Skate Board, Paint and Glue:
+//        // cr.select(root).where(root.get(&quot;itemName&quot;).in(&quot;Skate Board&quot;, &quot;Paint&quot;, &quot;Glue&quot;));
+//
+//        // 6.To check if the given property is null:
+//        // cr.select(root).where(cb.isNull(root.get(&quot;property&quot;)));
+//        // cr.select(root).where(cb.isEmpty(root.get(&quot;property&quot;)));
+//
+//        // 7.To check if the given property is not null:
+//        // cr.select(root).where(cb.isNotNull(root.get(&quot;property&quot;)));
+//        // cr.select(root).where(cb.isNotEmpty(root.get(&quot;property&quot;)));
+//
+//        TypedQuery&lt;Member&gt; typedQuery = entityManager.createQuery(cq);
+//        List&lt;Member&gt; dataList = typedQuery.getResultList();
+//
+//        // Predicate: where條件，由CriteriaBuilder產生
+//        // where name = ?name
+////        Predicate predName = cb.equal(root.get(&quot;name&quot;), name);
+////        cr.where(predName);
+//
+//        // 可查詢複合條件
+//        Predicate[] predicates = new Predicate[2];
+//        predicates[0] = cb.isNull(root.get(&quot;classes&quot;));
+//        predicates[1]  =cb.like(root.get(&quot;name&quot;), &quot;%a%&quot;);
+//        cq.select(root).where(predicates);
+//        // Order: 排序條件，由CriteriaBuilder產生
+//        // order by id desc
+////        Order orderByIdDesc = cb.desc(root.get(&quot;id&quot;));
+////        cr.orderBy(orderByIdDesc);
+////
+////        TypedQuery&lt;Member&gt; typedQuery = entityManager.createQuery(criteriaQuery);
+////        return typedQuery.getResultList();
+//    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
